@@ -41,7 +41,7 @@ Prawn::Document.generate("ett.pdf") {
       # Left of line
       stroke_color "CCCCCC"
       stroke_vertical_line(
-        row_top - row_height * 0.5,
+        row_top - row_height * 0.3,
         row_top - options[:row_height],
         :at => 0)
 
@@ -50,8 +50,8 @@ Prawn::Document.generate("ett.pdf") {
       slice_width = options[:column_width].to_f / 4
       bubble_hmargin = slice_width.to_f * 0.25
       bubble_width = slice_width - bubble_hmargin * 2
-      bubble_vmargin = options[:row_height].to_f * 0.2
-      bubble_height = options[:row_height].to_f * 0.6
+      bubble_vmargin = options[:row_height].to_f * 0.3
+      bubble_height = options[:row_height].to_f * 0.5
       undash
       stroke_color "333333"
       0.upto(3).each { |bubble|
