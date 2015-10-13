@@ -38,44 +38,45 @@ Prawn::Document.generate("ett.pdf") {
       bucket_hcenter + bucket_width / 2,
       :at => bucket_top - bucket_height)
   end
- 
-  def column(options)
-    column_top = options[:top]
-    column_left = options[:left]
-    row_height = options[:row_height]
+
+  # Task columns
+  column_top = header_top - header_height * 1.5
+  0.upto(column_count - 1).each { |col|
+    bleed_top = header_top - header_height
+    column_left = task_width + col * column_width
 
     # Column shade
-    fill_color(options[:odd] ? "DDDDDD" : "FFFFFF")
+    fill_color(col % 2 == 0 ? "DDDDDD" : "FFFFFF")
     fill_rectangle(
-        [options[:left], options[:bleed_top]],
-        options[:column_width],
-        options[:rows] * options[:row_height] - options[:top] + options[:bleed_top])
+        [column_left, bleed_top],
+        column_width,
+        row_count * row_height - column_top + bleed_top)
 
     # Left Bucket
     bucket(column_top, column_left, 15, 3)
 
     # Row bubbles
-    0.upto(options[:rows] - 1).each { |row|
-      row_top = options[:top] - options[:row_height] * row
+    0.upto(row_count - 1).each { |row|
+      row_top = column_top - row_height * row
 
       # Left of line
       stroke_color "CCCCCC"
       stroke_vertical_line(
         row_top - row_height * 0.3,
-        row_top - options[:row_height],
+        row_top - row_height,
         :at => 0)
 
       # Bubbles
       fill_color "FFFFFF"
-      slice_width = options[:column_width].to_f / 4
+      slice_width = column_width.to_f / 4
       bubble_hmargin = slice_width.to_f * 0.25
       bubble_width = slice_width - bubble_hmargin * 2
-      bubble_vmargin = options[:row_height].to_f * 0.3
-      bubble_height = options[:row_height].to_f * 0.5
+      bubble_vmargin = row_height.to_f * 0.3
+      bubble_height = row_height.to_f * 0.5
       undash
       stroke_color "333333"
       0.upto(3).each { |bubble|
-        bubble_left = options[:left] + slice_width * bubble + bubble_hmargin
+        bubble_left = column_left + slice_width * bubble + bubble_hmargin
         1.upto(2).each { |sub|
           horizontal_line(
             bubble_left,
@@ -90,19 +91,6 @@ Prawn::Document.generate("ett.pdf") {
           bubble_width / 2)
       }
     }
-  end
-
-  # Task columns
-  column_top = header_top - header_height * 1.5
-  0.upto(column_count - 1).each { |col|
-    column(
-      :odd => col % 2 == 0,
-      :top => column_top,
-      :bleed_top => header_top - header_height,
-      :left => task_width + col * column_width,
-      :rows => row_count,
-      :row_height => row_height,
-      :column_width => column_width)
   }
   # last bucket
   bucket(column_top, task_width + column_count * column_width, 15, 3)
