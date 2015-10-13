@@ -8,8 +8,9 @@ Prawn::Document.generate("ett.pdf") {
   header_height = 20
   row_height = 25
   task_width = 300
+  total_line_width = 25
   column_count = 9
-  column_width = (page_width - task_width) / column_count
+  column_width = (page_width - task_width - total_line_width) / column_count
   row_count = 14
 
   note_count = 14
@@ -122,6 +123,15 @@ Prawn::Document.generate("ett.pdf") {
   1.upto(row_count).each { |row|
     stroke_horizontal_line(
       0,
+      page_width - total_line_width,
+      :at => column_top - row_height * row)
+  }
+
+  # Total lines
+  stroke_color "000000"
+  1.upto(row_count).each { |row|
+    stroke_horizontal_line(
+      page_width - total_line_width + 3,
       page_width,
       :at => column_top - row_height * row)
   }
