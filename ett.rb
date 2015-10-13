@@ -120,22 +120,25 @@ Prawn::Document.generate("ett.pdf") {
   fill_rectangle [task_width - column_width, header_form_top], column_width * 2, header_form_height
   fill_rectangle [task_width + column_width * (column_count - 4), header_form_top], column_width * 4, header_form_height
 
-  # Task lines
-  stroke_color "CCCCCC"
   1.upto(row_count).each { |row|
+
+    # Task line
+    stroke_color "CCCCCC"
     stroke_horizontal_line(
       0,
       page_width - total_line_width,
       :at => column_top - row_height * row)
-  }
 
-  # Total lines
-  stroke_color "000000"
-  1.upto(row_count).each { |row|
+    # Total line
+    stroke_color "000000"
     stroke_horizontal_line(
       page_width - total_line_width + 3,
       page_width,
       :at => column_top - row_height * row)
+
+    # Checkbox
+    checkbox_width = 5
+    stroke_rectangle([-2, column_top - row_height * row + (row_height - checkbox_width) / 2], -checkbox_width, -checkbox_width)
   }
 
   # Note box
