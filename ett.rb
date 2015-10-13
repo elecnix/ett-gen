@@ -7,6 +7,7 @@ Prawn::Document.generate("ett.pdf") {
   page_height = 625
   header_height = 18
   row_height = 25
+  row_left_line_height = row_height * 0.7
   task_width = 300
   total_line_width = 25
   column_count = 9
@@ -62,7 +63,7 @@ Prawn::Document.generate("ett.pdf") {
       # Left of line
       stroke_color "CCCCCC"
       stroke_vertical_line(
-        row_top - row_height * 0.3,
+        row_top - row_height + row_left_line_height,
         row_top - row_height,
         :at => 0)
 
@@ -125,8 +126,9 @@ Prawn::Document.generate("ett.pdf") {
       :at => column_top - row_height * row)
 
     # Checkbox
+    stroke_color "AAAAAA"
     checkbox_width = 5
-    stroke_rectangle([-2, column_top - row_height * row + (row_height - checkbox_width) / 2], -checkbox_width, -checkbox_width)
+    stroke_rectangle([-2, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
   }
 
   # Note box
