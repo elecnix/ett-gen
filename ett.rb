@@ -4,8 +4,8 @@ require "prawn/measurement_extensions"
 
 Prawn::Document.generate("ett.pdf") {
   page_width = 550
-  page_height = 600
-  header_height = 20
+  page_height = 625
+  header_height = 18
   row_height = 25
   task_width = 300
   total_line_width = 25
@@ -112,11 +112,13 @@ Prawn::Document.generate("ett.pdf") {
   fill_rectangle [0, header_top], page_width, header_height
   fill_color "000000"
   draw_text "TASKS", :at => [5, header_top - header_height + 5], :valign => :center
-  draw_text "START TIME", :at => [200, header_top - header_height + 5], :valign => :center
-  draw_text "DATE", :at => [370, header_top - header_height + 5], :valign => :center
+  draw_text "START TIME", :at => [212, header_top - header_height + 5], :valign => :center
+  draw_text "DATE", :at => [395, header_top - header_height + 5], :valign => :center
   fill_color "FFFFFF"
-  fill_rectangle [275, header_top - 2.5], 50, 20 - 5
-  fill_rectangle [430, header_top - 2.5], 50, 20 - 5
+  header_form_height = header_height * 0.8
+  header_form_top = header_top - (header_height - header_form_height) / 2
+  fill_rectangle [task_width - column_width, header_form_top], column_width * 2, header_form_height
+  fill_rectangle [task_width + column_width * (column_count - 4), header_form_top], column_width * 4, header_form_height
 
   # Task lines
   stroke_color "CCCCCC"
