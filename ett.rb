@@ -18,7 +18,7 @@ Prawn::Document.generate("ett.pdf") {
 
   # Title
   stroke_color "aaaaaa"
-  self.line_width = 0.5
+  self.line_width = 0.2
   font "Helvetica", :style => :bold
   font_size 12
   text "THE EMERGENT TASK TIMER"
@@ -61,7 +61,7 @@ Prawn::Document.generate("ett.pdf") {
       row_top = column_top - row_height * row
 
       # Left of line
-      stroke_color "CCCCCC"
+      stroke_color "333333"
       stroke_vertical_line(
         row_top - row_height + row_left_line_height,
         row_top - row_height,
@@ -75,21 +75,21 @@ Prawn::Document.generate("ett.pdf") {
       bubble_vmargin = row_height.to_f * 0.3
       bubble_height = row_height.to_f * 0.5
       undash
-      stroke_color "333333"
       0.upto(3).each { |bubble|
         bubble_left = column_left + slice_width * bubble + bubble_hmargin
-        1.upto(2).each { |sub|
-          horizontal_line(
-            bubble_left,
-            bubble_left + bubble_width,
-            :at => row_top - bubble_vmargin - sub * bubble_height / 3)
-        }
-        stroke_color "666666"
+        stroke_color "000000"
         fill_and_stroke_rounded_rectangle(
           [bubble_left, row_top - bubble_vmargin],
           bubble_width,
           bubble_height,
           bubble_width / 2)
+        stroke_color "666666"
+        1.upto(2).each { |sub|
+          stroke_horizontal_line(
+            bubble_left,
+            bubble_left + bubble_width,
+            :at => row_top - bubble_vmargin - sub * bubble_height / 3)
+        }
       }
     }
   }
@@ -112,7 +112,7 @@ Prawn::Document.generate("ett.pdf") {
   1.upto(row_count).each { |row|
 
     # Task line
-    stroke_color "CCCCCC"
+    stroke_color "333333"
     stroke_horizontal_line(
       0,
       page_width - total_line_width,
@@ -126,7 +126,7 @@ Prawn::Document.generate("ett.pdf") {
       :at => column_top - row_height * row)
 
     # Checkbox
-    stroke_color "AAAAAA"
+    stroke_color "333333"
     checkbox_width = 5
     stroke_rectangle([-2, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
   }
@@ -135,7 +135,7 @@ Prawn::Document.generate("ett.pdf") {
   notes_header_height = 20
   notes_top = column_top - row_height * row_count - notes_header_height
   notes_box_height = page_height - notes_top - notes_header_height
-  stroke_color "AAAAAA"
+  stroke_color "000000"
   stroke_rectangle [0, notes_top], page_width, notes_box_height
 
   # Notes header
@@ -144,7 +144,7 @@ Prawn::Document.generate("ett.pdf") {
 
   # Note lines
   note_height = notes_box_height / note_count.to_f
-  stroke_color "CCCCCC"
+  stroke_color "AAAAAA"
   1.upto(note_count - 1).each { |note|
     stroke_horizontal_line(
       0,
