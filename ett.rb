@@ -15,7 +15,6 @@ Prawn::Document.generate("ett.pdf") {
   note_count = 14
 
   # Title
-  dash(3, :space => 2)
   stroke_color "aaaaaa"
   self.line_width = 0.5
   font "Helvetica", :style => :bold
@@ -24,15 +23,35 @@ Prawn::Document.generate("ett.pdf") {
   header_top = cursor
   font "Helvetica"
   font_size 10
+
+  def bucket(bucket_top, bucket_hcenter, bucket_width, bucket_height)
+    stroke_color "AAAAAA"
+    [-1,1].each { |edge|
+      stroke_vertical_line(
+        bucket_top,
+        bucket_top - bucket_height,
+        :at => bucket_hcenter + bucket_width / 2 * edge)
+    }
+    stroke_horizontal_line(
+      bucket_hcenter - bucket_width / 2,
+      bucket_hcenter + bucket_width / 2,
+      :at => bucket_top - bucket_height)
+  end
  
   def column(options)
+    column_top = options[:top]
+    column_left = options[:left]
     row_height = options[:row_height]
+
     # Column shade
     fill_color(options[:odd] ? "DDDDDD" : "FFFFFF")
     fill_rectangle(
         [options[:left], options[:bleed_top]],
         options[:column_width],
         options[:rows] * options[:row_height] - options[:top] + options[:bleed_top])
+
+    # Left Bucket
+    bucket(column_top, column_left, 15, 3)
 
     # Row bubbles
     0.upto(options[:rows] - 1).each { |row|
@@ -45,8 +64,8 @@ Prawn::Document.generate("ett.pdf") {
         row_top - options[:row_height],
         :at => 0)
 
-      fill_color "FFFFFF"
       # Bubbles
+      fill_color "FFFFFF"
       slice_width = options[:column_width].to_f / 4
       bubble_hmargin = slice_width.to_f * 0.25
       bubble_width = slice_width - bubble_hmargin * 2
@@ -73,7 +92,7 @@ Prawn::Document.generate("ett.pdf") {
   end
 
   # Task columns
-  column_top = header_top - header_height * 2
+  column_top = header_top - header_height * 1.5
   0.upto(column_count - 1).each { |col|
     column(
       :odd => col % 2 == 0,
@@ -84,6 +103,8 @@ Prawn::Document.generate("ett.pdf") {
       :row_height => row_height,
       :column_width => column_width)
   }
+  # last bucket
+  bucket(column_top, task_width + column_count * column_width, 15, 3)
 
   # Header
   fill_color "CCCCCC"
@@ -109,7 +130,7 @@ Prawn::Document.generate("ett.pdf") {
   notes_header_height = 20
   notes_top = column_top - row_height * row_count - notes_header_height
   notes_box_height = page_height - notes_top - notes_header_height
-  stroke_color "999999"
+  stroke_color "AAAAAA"
   stroke_rectangle [0, notes_top], page_width, notes_box_height
 
   # Notes header
