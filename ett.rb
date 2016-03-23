@@ -4,7 +4,7 @@ require "prawn/measurement_extensions"
 
 Prawn::Document.generate("ett.pdf") {
   page_width = 550
-  page_height = 728
+  page_height = 730
   header_height = 18
   row_height = 20
   row_left_line_height = row_height * 0.7
@@ -164,8 +164,8 @@ Prawn::Document.generate("ett.pdf") {
   }
 
   # Footer
-  fill_color "666666"
-  font_size 8
+  fill_color "000000"
+  font_size 6
   draw_text "Nicolas Marchildon 2016 ETT08", :at => [0, 0], :valign => :center
 }
 
