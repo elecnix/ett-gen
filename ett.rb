@@ -76,14 +76,15 @@ Prawn::Document.generate("ett.pdf") {
 
       # Bubbles
       fill_color "FFFFFF"
-      slice_width = column_width.to_f / 4
-      bubble_hmargin = slice_width.to_f * 0.2
-      bubble_width = slice_width - bubble_hmargin * 2
+      column_margin = column_width.to_f / 7
+      column_inner_width = column_width.to_f - (column_margin * 2)
+      bubble_hmargin = column_inner_width.to_f / 8
+      bubble_width = (column_inner_width - bubble_hmargin * 3) / 4
       bubble_vmargin = row_height.to_f * 0.3
       bubble_height = row_height.to_f * 0.6
       undash
       0.upto(3).each { |bubble|
-        bubble_left = column_left + slice_width * bubble + bubble_hmargin
+        bubble_left = column_left + column_margin + (bubble_width + bubble_hmargin) * bubble
         stroke_color "000000"
         fill_and_stroke_rounded_rectangle(
           [bubble_left, row_top - bubble_vmargin],
