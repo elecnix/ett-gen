@@ -134,7 +134,7 @@ Prawn::Document.generate("ett.pdf") {
 
     # Checkbox (left)
     stroke_color "333333"
-    stroke_rectangle([-2, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
+    stroke_rectangle([-6, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
 
     # Checkbox (right)
     stroke_color "666666"
