@@ -4,16 +4,16 @@ require "prawn/measurement_extensions"
 
 Prawn::Document.generate("ett.pdf") {
   page_width = 550
-  page_height = 625
+  page_height = 725
   header_height = 18
-  row_height = 23.5
+  row_height = 20
   row_left_line_height = row_height * 0.7
   task_width = 350
   total_line_width = 40
-  column_count = 9
+  column_count = 10
   column_width = (page_width - task_width - total_line_width) / column_count.to_f
   row_count = 15
-  note_count = 15
+  note_count = 19
   checkbox_width = 5
 
   # Title
