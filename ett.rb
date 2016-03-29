@@ -2,13 +2,13 @@
 require "prawn"
 require "prawn/measurement_extensions"
 
-Prawn::Document.generate("ett.pdf") {
-  page_width = 550
+Prawn::Document.generate("ett.pdf", {:left_margin => 50}) {
+  page_width = 530
   page_height = 730
   header_height = 18
   row_height = 20
   row_left_line_height = row_height * 0.7
-  task_width = 350
+  task_width = 330
   total_line_width = 40
   column_count = 10
   column_width = (page_width - task_width - total_line_width) / column_count.to_f
@@ -108,8 +108,8 @@ Prawn::Document.generate("ett.pdf") {
   fill_rectangle [0, header_top], page_width, header_height
   fill_color "000000"
   draw_text "TASKS", :at => [5, header_top - header_height + 5], :valign => :center
-  draw_text "START TIME", :at => [270, header_top - header_height + 5], :valign => :center
-  draw_text "DATE", :at => [375, header_top - header_height + 5], :valign => :center
+  draw_text "START TIME", :at => [250, header_top - header_height + 5], :valign => :center
+  draw_text "DATE", :at => [360, header_top - header_height + 5], :valign => :center
   fill_color "FFFFFF"
   header_form_height = header_height * 0.8
   header_form_top = header_top - (header_height - header_form_height) / 2
