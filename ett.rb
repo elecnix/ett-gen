@@ -42,6 +42,7 @@ Prawn::Document.generate("ett.pdf") {
 
   # Task columns
   column_top = header_top - header_height * 1.5
+  column_top_margin = 3
   0.upto(column_count - 1).each { |col|
     bleed_top = header_top - header_height
     column_left = task_width + col * column_width
@@ -49,12 +50,12 @@ Prawn::Document.generate("ett.pdf") {
     # Column shade
     fill_color(col % 2 == 0 ? "DDDDDD" : "FFFFFF")
     fill_rectangle(
-        [column_left, bleed_top],
+        [column_left, column_top - column_top_margin],
         column_width,
-        row_count * row_height - column_top + bleed_top)
+        row_count * row_height - column_top_margin)
 
     # Left Bucket
-    bucket(column_top, column_left, 15, 3)
+    bucket(column_top + 2, column_left + column_width / 2, 15, 3)
 
     # Row bubbles
     0.upto(row_count - 1).each { |row|
@@ -101,8 +102,6 @@ Prawn::Document.generate("ett.pdf") {
       }
     }
   }
-  # last bucket
-  bucket(column_top, task_width + column_count * column_width, 15, 3)
 
   # Header
   fill_color "CCCCCC"
