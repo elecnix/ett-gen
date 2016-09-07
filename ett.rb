@@ -104,17 +104,28 @@ Prawn::Document.generate("ett.pdf") {
   bucket(column_top, task_width + column_count * column_width, 15, 3)
 
   # Header
+  header_form_height = header_height * 0.8
+  header_form_top = header_top - (header_height - header_form_height) / 2
+
   fill_color "CCCCCC"
   fill_rectangle [0, header_top], page_width, header_height
   fill_color "000000"
+  font_size 10
   draw_text "TASKS", :at => [5, header_top - header_height + 5], :valign => :center
-  draw_text "START TIME", :at => [270, header_top - header_height + 5], :valign => :center
-  draw_text "DATE", :at => [375, header_top - header_height + 5], :valign => :center
+
+  draw_text "DATE:", :at => [task_width - 35, header_top - header_height + 5], :valign => :center
   fill_color "FFFFFF"
-  header_form_height = header_height * 0.8
-  header_form_top = header_top - (header_height - header_form_height) / 2
-  fill_rectangle [task_width - column_width, header_form_top], column_width * 2, header_form_height
-  fill_rectangle [task_width + column_width * (column_count - 6), header_form_top], column_width * 6, header_form_height
+  fill_rectangle [task_width, header_form_top], column_width * 9, header_form_height
+
+  fill_color "000000"
+  font_size 6
+  draw_text "START TIME: ", :at => [task_width - 100, header_top - row_height - 5], :valign => :center
+  stroke_horizontal_line(
+    task_width - 60,
+    task_width - column_width,
+    :at => header_top - row_height - 6)
+
+  fill_color "FFFFFF"
 
   1.upto(row_count).each { |row|
 
@@ -166,6 +177,6 @@ Prawn::Document.generate("ett.pdf") {
   # Footer
   fill_color "000000"
   font_size 8
-  draw_text "Nicolas Marchildon 2016 ETT07", :at => [0, 0], :valign => :center
+  draw_text "Nicolas Marchildon 2016 ETT09", :at => [0, 0], :valign => :center
 }
 
