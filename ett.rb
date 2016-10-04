@@ -2,18 +2,18 @@
 require "prawn"
 require "prawn/measurement_extensions"
 
-Prawn::Document.generate("ett.pdf") {
-  page_width = 550
-  page_height = 625
+Prawn::Document.generate("ett.pdf", {:left_margin => 50}) {
+  page_width = 530
+  page_height = 730
   header_height = 18
-  row_height = 23.5
+  row_height = 20
   row_left_line_height = row_height * 0.7
-  task_width = 350
+  task_width = 330
   total_line_width = 40
-  column_count = 9
+  column_count = 10
   column_width = (page_width - task_width - total_line_width) / column_count.to_f
   row_count = 15
-  note_count = 15
+  note_count = 19
   checkbox_width = 5
 
   # Title
@@ -42,6 +42,7 @@ Prawn::Document.generate("ett.pdf") {
 
   # Task columns
   column_top = header_top - header_height * 1.5
+  column_top_margin = 3
   0.upto(column_count - 1).each { |col|
     bleed_top = header_top - header_height
     column_left = task_width + col * column_width
@@ -49,12 +50,12 @@ Prawn::Document.generate("ett.pdf") {
     # Column shade
     fill_color(col % 2 == 0 ? "DDDDDD" : "FFFFFF")
     fill_rectangle(
-        [column_left, bleed_top],
+        [column_left, column_top - column_top_margin],
         column_width,
-        row_count * row_height - column_top + bleed_top)
+        row_count * row_height - column_top_margin)
 
     # Left Bucket
-    bucket(column_top, column_left, 15, 3)
+    bucket(column_top + 2, column_left + column_width / 2, 15, 3)
 
     # Row bubbles
     0.upto(row_count - 1).each { |row|
@@ -76,14 +77,15 @@ Prawn::Document.generate("ett.pdf") {
 
       # Bubbles
       fill_color "FFFFFF"
-      slice_width = column_width.to_f / 4
-      bubble_hmargin = slice_width.to_f * 0.2
-      bubble_width = slice_width - bubble_hmargin * 2
+      column_margin = column_width.to_f / 7
+      column_inner_width = column_width.to_f - (column_margin * 2)
+      bubble_hmargin = column_inner_width.to_f / 8
+      bubble_width = (column_inner_width - bubble_hmargin * 3) / 4
       bubble_vmargin = row_height.to_f * 0.3
       bubble_height = row_height.to_f * 0.6
       undash
       0.upto(3).each { |bubble|
-        bubble_left = column_left + slice_width * bubble + bubble_hmargin
+        bubble_left = column_left + column_margin + (bubble_width + bubble_hmargin) * bubble
         stroke_color "000000"
         fill_and_stroke_rounded_rectangle(
           [bubble_left, row_top - bubble_vmargin],
@@ -100,8 +102,6 @@ Prawn::Document.generate("ett.pdf") {
       }
     }
   }
-  # last bucket
-  bucket(column_top, task_width + column_count * column_width, 15, 3)
 
   # Header
   header_form_height = header_height * 0.8
@@ -115,15 +115,15 @@ Prawn::Document.generate("ett.pdf") {
 
   draw_text "DATE:", :at => [task_width - 35, header_top - header_height + 5], :valign => :center
   fill_color "FFFFFF"
-  fill_rectangle [task_width, header_form_top], column_width * 9, header_form_height
+  fill_rectangle [task_width, header_form_top], column_width * 10, header_form_height
 
   fill_color "000000"
   font_size 6
-  draw_text "START TIME: ", :at => [task_width - 100, header_top - row_height - 5], :valign => :center
+  draw_text "START TIME: ", :at => [task_width - 100, header_top - row_height * 1.5], :valign => :center
   stroke_horizontal_line(
     task_width - 60,
     task_width - column_width,
-    :at => header_top - row_height - 6)
+    :at => header_top - row_height * 1.5)
 
   fill_color "FFFFFF"
 
@@ -145,7 +145,7 @@ Prawn::Document.generate("ett.pdf") {
 
     # Checkbox (left)
     stroke_color "333333"
-    stroke_rectangle([-2, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
+    stroke_rectangle([-6, column_top - row_height * row + (row_left_line_height - checkbox_width) / 2.0], -checkbox_width, -checkbox_width)
 
     # Checkbox (right)
     stroke_color "666666"
@@ -176,7 +176,7 @@ Prawn::Document.generate("ett.pdf") {
 
   # Footer
   fill_color "000000"
-  font_size 8
+  font_size 6
   draw_text "Nicolas Marchildon 2016 ETT09", :at => [0, 0], :valign => :center
 }
 
